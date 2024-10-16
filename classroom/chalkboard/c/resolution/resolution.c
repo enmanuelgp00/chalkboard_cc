@@ -4,33 +4,44 @@
 #include <ctype.h>
 
 int isNumber(char *str);
-void setResolution(char *str), print(char str[]), printHelp();
+void setResolution(char *str), print(char str[]), printHelp(), queryGet(char*), printSupported();
 char* getResolution();
 typedef DEVMODE Devmode; // DEVMODE is defined in Windows api has `typedef (type definition) struct DEVMODE` so you dont use struct to call it again
 Devmode getDisplay();
 
 int main(int argsc, char *argsv[]) {
 	char* param = argsv[1];
-	if (argsc == 3) {
+	if (2 <= argsc && argsc <= 3) {
 		if (strcmp(param, "set") == 0) {
 			setResolution(argsv[2]);
-		} else {
-			printHelp();
-		}		
-	} else if (argsc == 2) {
-		if (strcmp(param,"get") == 0) {
-			print(getResolution());
-		} else if (strcmp(param, "reset") == 0){
+		} else if (strcmp(param,"get") == 0) {
+			if (argsv[2] != NULL && strcmp(argsv[2], "supp") == 0) {
+				printSupported();
+			} else {
+				print(getResolution());
+			}
+		} else  if (strcmp(param, "reset") == 0){
 			char reset[] = "1920x1080";
-			setResolution(reset);	
+			setResolution(reset);
 		} else {
 			printHelp();
 		}
-		
 	} else {
 		printHelp();
 	}
 	return 0;
+}
+void printSupported() {
+	Devmode devmode = getDisplay();
+	int mode = 0;
+	while (EnumDisplaySettings(NULL, mode, &devmode)) {
+		printf("Width: %4d, Height: %4d, BitsPerPel: %d, Frequency: %d\n",
+			devmode.dmPelsWidth,
+			devmode.dmPelsHeight,
+			devmode.dmBitsPerPel,
+			devmode.dmDisplayFrequency);
+			mode ++;
+	}
 }
 Devmode getDisplay() {
 	Devmode dm; 
@@ -71,7 +82,7 @@ void print(char str[]) {
 	printf("%s\n", str);
 }
 void printHelp(){
-	printf("resolution [-get | -set WIDTHxHEIGHT]");
+	printf("resolution [get | set WIDTHxHEIGHT | reset]");
 }
 /*
 You

@@ -1,0 +1,1 @@
+@%~dp0\..\classroom\chalkboard\c\resolution\resolution.exe %*
