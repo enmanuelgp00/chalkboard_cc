@@ -12,14 +12,17 @@ Devmode getDisplay();
 int main(int argsc, char *argsv[]) {
 	char* param = argsv[1];
 	if (argsc == 3) {
-		if (strcmp(param, "-set") == 0) {
+		if (strcmp(param, "set") == 0) {
 			setResolution(argsv[2]);
 		} else {
 			printHelp();
 		}		
 	} else if (argsc == 2) {
-		if (strcmp(param,"-get") == 0) {
+		if (strcmp(param,"get") == 0) {
 			print(getResolution());
+		} else if (strcmp(param, "reset") == 0){
+			char reset[] = "1920x1080";
+			setResolution(reset);	
 		} else {
 			printHelp();
 		}
@@ -49,6 +52,7 @@ int isNumber(char *str) {
 void setResolution(char *str) {
 	int width = atoi(strtok(str, "x"));
 	int height = atoi(strtok(NULL, ""));
+	//printf("%d %d", width, height);
 	Devmode dm = getDisplay();
 	dm.dmPelsWidth = width;
 	dm.dmPelsHeight = height;
