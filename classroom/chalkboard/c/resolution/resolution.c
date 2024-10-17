@@ -82,7 +82,7 @@ void print(char str[]) {
 	printf("%s\n", str);
 }
 void printHelp(){
-	printf("resolution [get | set WIDTHxHEIGHT | reset]");
+	printf("resolution [get <supp> | set WIDTHxHEIGHT | reset]");
 }
 /*
 You
